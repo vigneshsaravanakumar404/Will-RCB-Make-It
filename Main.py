@@ -105,7 +105,17 @@ def get_matches():
     return upcoming_matches
 
 
-def iteration(standings, matches, array_i):
+teams = get_standings()
+matches = get_matches()[:-4]
+total = 2 ** len(matches)
+
+
+for i in tqdm(range(total)):
+    standings = deepcopy(teams)
+    binary_i = bin(i)[2:].zfill(len(matches))
+    array_i = [int(x) for x in binary_i]
+
+    # O(n)
     for j in range(len(array_i)):
         match = matches[j]
         team1 = match[0]
@@ -123,22 +133,11 @@ def iteration(standings, matches, array_i):
         )
     )
 
-    return list(standings.keys())[:7]
-
-
-teams = get_standings()
-matches = get_matches()[:-4]
-total = 2 ** len(matches)
-
-
-for i in tqdm(range(total)):
-    binary_i = bin(i)[2:].zfill(len(matches))
-    array_i = [int(x) for x in binary_i]
-
     # O(10)
-    top_7_teams = iteration(teams, matches, array_i)
+    top_7_teams = list(standings.keys())[:7]
     for team in top_7_teams:
         probabilities[team] += 1
+
 
 for team in probabilities:
     probabilities[team] /= total
