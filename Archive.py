@@ -9,6 +9,7 @@ from copy import deepcopy
 
 
 # Constants
+TOP_TEAMS = 7
 STANDINGS_URL = "https://www.espncricinfo.com/series/indian-premier-league-2024-1410320/points-table-standings"
 MATCHES_URL = "https://cricbuzz-cricket.p.rapidapi.com/series/v1/7607"
 RAPID_API_HEADER = {
@@ -84,34 +85,60 @@ def get_standings() -> dict:
     return teams
 
 
-def get_matches():
+def get_matches(history: int = 0) -> "list[str]":
 
-    # response = get(MATCHES_URL, headers=RAPID_API_HEADER)
     response = open("Response.json", "r").read()
     response = loads(response)
 
     upcoming_matches = []
     matchDetailsMap = response.get("matchDetails", [])
+    last_match_completed = -1
     for matchDetails in matchDetailsMap:
         temp = matchDetails.get("matchDetailsMap", None)
         if temp is not None:
             matches = temp.get("match", [])
             for match in matches:
-                if match.get("matchInfo", {}).get("state") == "Upcoming":
+
+                if match.get("matchInfo", {}).get("state") in ["Upcoming", "Preview"]:
+                    team1_id = int(match["matchInfo"]["team1"]["teamId"])
+                    team2_id = int(match["matchInfo"]["team2"]["teamId"])
+                    upcoming_matches.append([TEAMS[team1_id], TEAMS[team2_id]])
+                else:
+                    last_match_completed += 1
+
+    for matchDetails in matchDetailsMap:
+        temp = matchDetails.get("matchDetailsMap", None)
+        if temp is not None:
+            matches = temp.get("match", [])
+            for match in matches:
+                match_number = (
+                    int(
+                        "".join(
+                            filter(
+                                str.isdigit, match.get("matchInfo", {}).get("matchDesc")
+                            )
+                        )
+                        + "0"
+                    )
+                    // 10
+                )
+                if (
+                    match_number > last_match_completed - history + 1
+                    and match_number <= last_match_completed + 1
+                ):
                     team1_id = int(match["matchInfo"]["team1"]["teamId"])
                     team2_id = int(match["matchInfo"]["team2"]["teamId"])
                     upcoming_matches.append([TEAMS[team1_id], TEAMS[team2_id]])
 
+    upcoming_matches = [
+        match for match in upcoming_matches if "Upcoming Team" not in match
+    ]
+
     return upcoming_matches
 
 
-teams = get_standings()
-matches = get_matches()[:-4]
-total = 2 ** len(matches)
+def iteration(standings: dict, matches: "list[str]"):
 
-
-for i in tqdm(range(total)):
-    standings = deepcopy(teams)
     binary_i = bin(i)[2:].zfill(len(matches))
     array_i = [int(x) for x in binary_i]
 
@@ -134,9 +161,17 @@ for i in tqdm(range(total)):
     )
 
     # O(10)
-    top_4_teams = list(standings.keys())[:4]
-    for team in top_4_teams:
+    top = list(standings.keys())[:TOP_TEAMS]
+    for team in top:
         probabilities[team] += 1
+
+
+teams = get_standings()
+matches = get_matches(history=0)
+total = 2 ** len(matches)
+
+for i in tqdm(range(total)):
+    iteration(teams, matches)
 
 
 for team in probabilities:
@@ -146,31 +181,3 @@ print("\n")
 probabilities = dict(sorted(probabilities.items(), key=lambda x: x[1], reverse=True))
 for team in probabilities:
     print(f"{team}: {probabilities[team] * 100}")
-
-
-"""Top 4:
-Rajasthan Royals: 99.91302490234375
-Kolkata Knight Riders: 93.91746520996094
-Lucknow Super Giants: 79.09212112426758
-Sunrisers Hyderabad: 54.144287109375
-Chennai Super Kings: 53.69882583618164
-Delhi Capitals: 10.712385177612305
-Gujarat Titans: 5.953311920166016
-Punjab Kings: 0.9618759155273438
-Mumbai Indians: 0.8262157440185547
-Royal Challengers Bengaluru: 0.780487060546875
-"""
-
-"""
-Top 7:
-Rajasthan Royals: 100.0
-Kolkata Knight Riders: 100.0
-Lucknow Super Giants: 100.0
-Sunrisers Hyderabad: 99.89471435546875
-Chennai Super Kings: 99.7955322265625
-Delhi Capitals: 96.67510986328125
-Gujarat Titans: 85.39276123046875
-Punjab Kings: 80.0485610961914
-Mumbai Indians: 76.58443450927734
-Royal Challengers Bengaluru: 61.60888671875
-"""
