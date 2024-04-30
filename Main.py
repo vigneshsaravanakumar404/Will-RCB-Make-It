@@ -134,7 +134,7 @@ for i in tqdm(range(total)):
     )
 
     # O(10)
-    top_7_teams = list(standings.keys())[:7]
+    top_7_teams = list(standings.keys())[:9]
     for team in top_7_teams:
         probabilities[team] += 1
 
