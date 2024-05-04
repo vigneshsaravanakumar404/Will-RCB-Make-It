@@ -6,6 +6,7 @@ from collections import OrderedDict
 from time import sleep
 from tqdm import tqdm
 from copy import deepcopy
+from prettytable import PrettyTable
 
 
 # Constants
@@ -28,7 +29,7 @@ TEAMS = {
     255: "Sunrisers Hyderabad",
     106: "Upcoming Team",
 }
-probabilities = {
+probabilities_NONRR = {
     "Rajasthan Royals": 0,
     "Royal Challengers Bengaluru": 0,
     "Kolkata Knight Riders": 0,
@@ -41,8 +42,35 @@ probabilities = {
     "Sunrisers Hyderabad": 0,
 }
 
+probabilities_NRR = {
+    "Rajasthan Royals": 0,
+    "Royal Challengers Bengaluru": 0,
+    "Kolkata Knight Riders": 0,
+    "Mumbai Indians": 0,
+    "Lucknow Super Giants": 0,
+    "Gujarat Titans": 0,
+    "Punjab Kings": 0,
+    "Chennai Super Kings": 0,
+    "Delhi Capitals": 0,
+    "Sunrisers Hyderabad": 0,
+}
 
-# Parse Data
+can_qualify = {
+    "Rajasthan Royals": False,
+    "Royal Challengers Bengaluru": False,
+    "Kolkata Knight Riders": False,
+    "Mumbai Indians": False,
+    "Lucknow Super Giants": False,
+    "Gujarat Titans": False,
+    "Punjab Kings": False,
+    "Chennai Super Kings": False,
+    "Delhi Capitals": False,
+    "Sunrisers Hyderabad": False,
+}
+next_match = []
+
+
+# Functions
 def get_standings() -> dict:
 
     response = get(STANDINGS_URL)
@@ -86,7 +114,6 @@ def get_standings() -> dict:
 
 def get_matches():
 
-    # response = get(MATCHES_URL, headers=RAPID_API_HEADER)
     response = open("Response.json", "r").read()
     response = loads(response)
 
@@ -97,7 +124,10 @@ def get_matches():
         if temp is not None:
             matches = temp.get("match", [])
             for match in matches:
-                if match.get("matchInfo", {}).get("state") == "Upcoming":
+                if match.get("matchInfo", {}).get("state") in [
+                    "Upcoming",
+                    "Preview",
+                ]:
                     team1_id = int(match["matchInfo"]["team1"]["teamId"])
                     team2_id = int(match["matchInfo"]["team2"]["teamId"])
                     upcoming_matches.append([TEAMS[team1_id], TEAMS[team2_id]])
@@ -109,7 +139,7 @@ teams = get_standings()
 matches = get_matches()[:-4]
 total = 2 ** len(matches)
 
-
+# No Winner
 for i in tqdm(range(total)):
     standings = deepcopy(teams)
     binary_i = bin(i)[2:].zfill(len(matches))
@@ -133,44 +163,35 @@ for i in tqdm(range(total)):
         )
     )
 
-    # O(10)
-    top_4_teams = list(standings.keys())[:4]
-    for team in top_4_teams:
-        probabilities[team] += 1
+    # If the team is top 4 or tied for top 4 then add 1
+    fourth_points = list(standings.values())[3]["Points"]
+    for team in standings:
+        if standings[team]["Points"] >= fourth_points:
+            probabilities_NONRR[team] += 1
 
+    top_4 = list(standings.keys())[:4]
+    for team in top_4:
+        probabilities_NRR[team] += 1
 
-for team in probabilities:
-    probabilities[team] /= total
+# Parse Probabilities
+for team in probabilities_NONRR:
+    if probabilities_NONRR[team] >= 0:
+        can_qualify[team] = True
+    probabilities_NONRR[team] /= total
+    probabilities_NONRR[team] = round(probabilities_NONRR[team] * 100, 4)
 
-print("\n")
-probabilities = dict(sorted(probabilities.items(), key=lambda x: x[1], reverse=True))
-for team in probabilities:
-    print(f"{team}: {probabilities[team] * 100}")
+probabilities_NONRR = dict(
+    sorted(probabilities_NONRR.items(), key=lambda x: x[1], reverse=True)
+)
+for team in probabilities_NRR:
+    probabilities_NRR[team] /= total
+    probabilities_NRR[team] = round(probabilities_NRR[team] * 100, 4)
 
-
-"""Top 4:
-Rajasthan Royals: 99.91302490234375
-Kolkata Knight Riders: 93.91746520996094
-Lucknow Super Giants: 79.09212112426758
-Sunrisers Hyderabad: 54.144287109375
-Chennai Super Kings: 53.69882583618164
-Delhi Capitals: 10.712385177612305
-Gujarat Titans: 5.953311920166016
-Punjab Kings: 0.9618759155273438
-Mumbai Indians: 0.8262157440185547
-Royal Challengers Bengaluru: 0.780487060546875
-"""
-
-"""
-Top 7:
-Rajasthan Royals: 100.0
-Kolkata Knight Riders: 100.0
-Lucknow Super Giants: 100.0
-Sunrisers Hyderabad: 99.89471435546875
-Chennai Super Kings: 99.7955322265625
-Delhi Capitals: 96.67510986328125
-Gujarat Titans: 85.39276123046875
-Punjab Kings: 80.0485610961914
-Mumbai Indians: 76.58443450927734
-Royal Challengers Bengaluru: 61.60888671875
-"""
+# Create Table
+table = PrettyTable()
+table.field_names = ["Team", "No NRR Probability", "NRR Probability", "Can Qualify"]
+for team in probabilities_NONRR:
+    table.add_row(
+        [team, probabilities_NONRR[team], probabilities_NRR[team], can_qualify[team]]
+    )
+print(table)
