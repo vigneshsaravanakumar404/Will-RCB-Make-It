@@ -54,6 +54,30 @@ probabilities_NRR = {
     "Delhi Capitals": 0,
     "Sunrisers Hyderabad": 0,
 }
+first_winner = {
+    "Rajasthan Royals": 0,
+    "Royal Challengers Bengaluru": 0,
+    "Kolkata Knight Riders": 0,
+    "Mumbai Indians": 0,
+    "Lucknow Super Giants": 0,
+    "Gujarat Titans": 0,
+    "Punjab Kings": 0,
+    "Chennai Super Kings": 0,
+    "Delhi Capitals": 0,
+    "Sunrisers Hyderabad": 0,
+}
+second_winner = {
+    "Rajasthan Royals": 0,
+    "Royal Challengers Bengaluru": 0,
+    "Kolkata Knight Riders": 0,
+    "Mumbai Indians": 0,
+    "Lucknow Super Giants": 0,
+    "Gujarat Titans": 0,
+    "Punjab Kings": 0,
+    "Chennai Super Kings": 0,
+    "Delhi Capitals": 0,
+    "Sunrisers Hyderabad": 0,
+}
 
 can_qualify = {
     "Rajasthan Royals": False,
@@ -127,10 +151,14 @@ def get_matches():
                 if match.get("matchInfo", {}).get("state") in [
                     "Upcoming",
                     "Preview",
+                    "In Progress",
                 ]:
                     team1_id = int(match["matchInfo"]["team1"]["teamId"])
                     team2_id = int(match["matchInfo"]["team2"]["teamId"])
                     upcoming_matches.append([TEAMS[team1_id], TEAMS[team2_id]])
+
+                    if match["matchInfo"]["state"] in ["In Progress", "Preview"]:
+                        next_match.append([TEAMS[team1_id], TEAMS[team2_id]])
 
     return upcoming_matches
 
@@ -173,19 +201,22 @@ for i in tqdm(range(total)):
     for team in top_4:
         probabilities_NRR[team] += 1
 
+print(next_match)
+
+
 # Parse Probabilities
+probabilities_NONRR = dict(
+    sorted(probabilities_NONRR.items(), key=lambda x: x[1], reverse=True)
+)
 for team in probabilities_NONRR:
     if probabilities_NONRR[team] >= 0:
         can_qualify[team] = True
     probabilities_NONRR[team] /= total
-    probabilities_NONRR[team] = round(probabilities_NONRR[team] * 100, 4)
+    probabilities_NONRR[team] = "{:.5f}".format(probabilities_NONRR[team] * 100)
 
-probabilities_NONRR = dict(
-    sorted(probabilities_NONRR.items(), key=lambda x: x[1], reverse=True)
-)
 for team in probabilities_NRR:
     probabilities_NRR[team] /= total
-    probabilities_NRR[team] = round(probabilities_NRR[team] * 100, 4)
+    probabilities_NRR[team] = "{:.5f}".format(probabilities_NRR[team] * 100)
 
 # Create Table
 table = PrettyTable()
