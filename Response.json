@@ -3135,19 +3135,19 @@
                             "matchFormat": "T20",
                             "startDate": "1714903200000",
                             "endDate": "1714915800000",
-                            "state": "Preview",
-                            "status": "Match starts at May 05, 10:00 GMT",
+                            "state": "Complete",
+                            "status": "Chennai Super Kings won by 28 runs",
                             "team1": {
-                                "teamId": 65,
-                                "teamName": "Punjab Kings",
-                                "teamSName": "PBKS",
-                                "imageId": 225648
-                            },
-                            "team2": {
                                 "teamId": 58,
                                 "teamName": "Chennai Super Kings",
                                 "teamSName": "CSK",
                                 "imageId": 225641
+                            },
+                            "team2": {
+                                "teamId": 65,
+                                "teamName": "Punjab Kings",
+                                "teamSName": "PBKS",
+                                "imageId": 225648
                             },
                             "venueInfo": {
                                 "id": 155,
@@ -3155,9 +3155,28 @@
                                 "city": "Dharamsala",
                                 "timezone": "+05:30"
                             },
+                            "currBatTeamId": 58,
                             "seriesStartDt": "1711065600000",
                             "seriesEndDt": "1716854400000",
                             "isTimeAnnounced": true
+                        },
+                        "matchScore": {
+                            "team1Score": {
+                                "inngs1": {
+                                    "inningsId": 1,
+                                    "runs": 167,
+                                    "wickets": 9,
+                                    "overs": 20.0
+                                }
+                            },
+                            "team2Score": {
+                                "inngs1": {
+                                    "inningsId": 2,
+                                    "runs": 139,
+                                    "wickets": 9,
+                                    "overs": 20.0
+                                }
+                            }
                         }
                     },
                     {
@@ -3169,19 +3188,19 @@
                             "matchFormat": "T20",
                             "startDate": "1714917600000",
                             "endDate": "1714930200000",
-                            "state": "Preview",
-                            "status": "Match starts at May 05, 14:00 GMT",
+                            "state": "Complete",
+                            "status": "Kolkata Knight Riders won by 98 runs",
                             "team1": {
-                                "teamId": 966,
-                                "teamName": "Lucknow Super Giants",
-                                "teamSName": "LSG",
-                                "imageId": 389444
-                            },
-                            "team2": {
                                 "teamId": 63,
                                 "teamName": "Kolkata Knight Riders",
                                 "teamSName": "KKR",
                                 "imageId": 225646
+                            },
+                            "team2": {
+                                "teamId": 966,
+                                "teamName": "Lucknow Super Giants",
+                                "teamSName": "LSG",
+                                "imageId": 389444
                             },
                             "venueInfo": {
                                 "id": 485,
@@ -3189,9 +3208,28 @@
                                 "city": "Lucknow",
                                 "timezone": "+05:30"
                             },
+                            "currBatTeamId": 63,
                             "seriesStartDt": "1711065600000",
                             "seriesEndDt": "1716854400000",
                             "isTimeAnnounced": true
+                        },
+                        "matchScore": {
+                            "team1Score": {
+                                "inngs1": {
+                                    "inningsId": 1,
+                                    "runs": 235,
+                                    "wickets": 6,
+                                    "overs": 20.0
+                                }
+                            },
+                            "team2Score": {
+                                "inngs1": {
+                                    "inningsId": 2,
+                                    "runs": 137,
+                                    "wickets": 10,
+                                    "overs": 16.1
+                                }
+                            }
                         }
                     }
                 ],
@@ -3211,8 +3249,8 @@
                             "matchFormat": "T20",
                             "startDate": "1715004000000",
                             "endDate": "1715016600000",
-                            "state": "Upcoming",
-                            "status": "Match starts at May 06, 14:00 GMT",
+                            "state": "Preview",
+                            "status": "Preview",
                             "team1": {
                                 "teamId": 62,
                                 "teamName": "Mumbai Indians",
@@ -4023,7 +4061,7 @@
             }
         }
     ],
-    "landingPosition": 96,
+    "landingPosition": 99,
     "appIndex": {
         "seoTitle": "Indian Premier League 2024 live scores, schedule and results - Cricbuzz | Cricbuzz.com",
         "webURL": "www.cricbuzz.com/cricket-series/"

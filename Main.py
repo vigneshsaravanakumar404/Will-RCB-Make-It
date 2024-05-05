@@ -54,30 +54,7 @@ probabilities_NRR = {
     "Delhi Capitals": 0,
     "Sunrisers Hyderabad": 0,
 }
-first_winner = {
-    "Rajasthan Royals": 0,
-    "Royal Challengers Bengaluru": 0,
-    "Kolkata Knight Riders": 0,
-    "Mumbai Indians": 0,
-    "Lucknow Super Giants": 0,
-    "Gujarat Titans": 0,
-    "Punjab Kings": 0,
-    "Chennai Super Kings": 0,
-    "Delhi Capitals": 0,
-    "Sunrisers Hyderabad": 0,
-}
-second_winner = {
-    "Rajasthan Royals": 0,
-    "Royal Challengers Bengaluru": 0,
-    "Kolkata Knight Riders": 0,
-    "Mumbai Indians": 0,
-    "Lucknow Super Giants": 0,
-    "Gujarat Titans": 0,
-    "Punjab Kings": 0,
-    "Chennai Super Kings": 0,
-    "Delhi Capitals": 0,
-    "Sunrisers Hyderabad": 0,
-}
+
 
 can_qualify = {
     "Rajasthan Royals": False,
@@ -150,8 +127,8 @@ def get_matches():
             for match in matches:
                 if match.get("matchInfo", {}).get("state") in [
                     "Upcoming",
-                    "Preview",
                     "In Progress",
+                    "Preview",
                 ]:
                     team1_id = int(match["matchInfo"]["team1"]["teamId"])
                     team2_id = int(match["matchInfo"]["team2"]["teamId"])
@@ -209,7 +186,7 @@ probabilities_NONRR = dict(
     sorted(probabilities_NONRR.items(), key=lambda x: x[1], reverse=True)
 )
 for team in probabilities_NONRR:
-    if probabilities_NONRR[team] >= 0:
+    if probabilities_NONRR[team] > 0:
         can_qualify[team] = True
     probabilities_NONRR[team] /= total
     probabilities_NONRR[team] = "{:.5f}".format(probabilities_NONRR[team] * 100)
