@@ -54,7 +54,7 @@ probabilities_NRR = {
     "Delhi Capitals": 0,
     "Sunrisers Hyderabad": 0,
 }
-
+TOP = 4
 
 can_qualify = {
     "Rajasthan Royals": False,
@@ -134,13 +134,11 @@ def get_matches():
                     team2_id = int(match["matchInfo"]["team2"]["teamId"])
                     upcoming_matches.append([TEAMS[team1_id], TEAMS[team2_id]])
 
-                    if match["matchInfo"]["state"] in ["In Progress", "Preview"]:
-                        next_match.append([TEAMS[team1_id], TEAMS[team2_id]])
-
     return upcoming_matches
 
 
 teams = get_standings()
+print("Sunrisers Hyderabad vs Lucknow Super Giants")
 matches = get_matches()[:-4]
 total = 2 ** len(matches)
 
@@ -169,16 +167,14 @@ for i in tqdm(range(total)):
     )
 
     # If the team is top 4 or tied for top 4 then add 1
-    fourth_points = list(standings.values())[3]["Points"]
+    fourth_points = list(standings.values())[TOP - 1]["Points"]
     for team in standings:
         if standings[team]["Points"] >= fourth_points:
             probabilities_NONRR[team] += 1
 
-    top_4 = list(standings.keys())[:4]
+    top_4 = list(standings.keys())[:TOP]
     for team in top_4:
         probabilities_NRR[team] += 1
-
-print(next_match)
 
 
 # Parse Probabilities
