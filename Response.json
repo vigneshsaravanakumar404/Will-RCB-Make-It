@@ -3431,19 +3431,19 @@
                             "matchFormat": "T20",
                             "startDate": "1715263200000",
                             "endDate": "1715275800000",
-                            "state": "Preview",
-                            "status": "Match starts at May 09, 14:00 GMT",
+                            "state": "Complete",
+                            "status": "Royal Challengers Bengaluru won by 60 runs",
                             "team1": {
-                                "teamId": 65,
-                                "teamName": "Punjab Kings",
-                                "teamSName": "PBKS",
-                                "imageId": 225648
-                            },
-                            "team2": {
                                 "teamId": 59,
                                 "teamName": "Royal Challengers Bengaluru",
                                 "teamSName": "RCB",
                                 "imageId": 225643
+                            },
+                            "team2": {
+                                "teamId": 65,
+                                "teamName": "Punjab Kings",
+                                "teamSName": "PBKS",
+                                "imageId": 225648
                             },
                             "venueInfo": {
                                 "id": 155,
@@ -3451,9 +3451,28 @@
                                 "city": "Dharamsala",
                                 "timezone": "+05:30"
                             },
+                            "currBatTeamId": 59,
                             "seriesStartDt": "1711065600000",
                             "seriesEndDt": "1716854400000",
                             "isTimeAnnounced": true
+                        },
+                        "matchScore": {
+                            "team1Score": {
+                                "inngs1": {
+                                    "inningsId": 1,
+                                    "runs": 241,
+                                    "wickets": 7,
+                                    "overs": 20.0
+                                }
+                            },
+                            "team2Score": {
+                                "inngs1": {
+                                    "inningsId": 2,
+                                    "runs": 181,
+                                    "wickets": 10,
+                                    "overs": 17.0
+                                }
+                            }
                         }
                     }
                 ],
@@ -3473,7 +3492,7 @@
                             "matchFormat": "T20",
                             "startDate": "1715349600000",
                             "endDate": "1715362200000",
-                            "state": "Upcoming",
+                            "state": "Preview",
                             "status": "Match starts at May 10, 14:00 GMT",
                             "team1": {
                                 "teamId": 971,
@@ -4117,7 +4136,7 @@
             }
         }
     ],
-    "landingPosition": 105,
+    "landingPosition": 107,
     "appIndex": {
         "seoTitle": "Indian Premier League 2024 live scores, schedule and results - Cricbuzz | Cricbuzz.com",
         "webURL": "www.cricbuzz.com/cricket-series/"

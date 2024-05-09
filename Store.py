@@ -8,8 +8,10 @@ RAPID_API_HEADER = {
     "X-RapidAPI-Host": "cricbuzz-cricket.p.rapidapi.com",
 }
 
-response = get(MATCHES_URL, headers=RAPID_API_HEADER)
-response = response.json()
 
-with open("Response.json", "w") as f:
-    dump(response, f, indent=4)
+def Update():
+    response = get(MATCHES_URL, headers=RAPID_API_HEADER)
+    response = response.json()
+
+    with open("Response.json", "w") as f:
+        dump(response, f, indent=4)
