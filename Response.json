@@ -3492,8 +3492,8 @@
                             "matchFormat": "T20",
                             "startDate": "1715349600000",
                             "endDate": "1715362200000",
-                            "state": "Preview",
-                            "status": "Match starts at May 10, 14:00 GMT",
+                            "state": "Complete",
+                            "status": "Gujarat Titans won by 35 runs",
                             "team1": {
                                 "teamId": 971,
                                 "teamName": "Gujarat Titans",
@@ -3512,9 +3512,28 @@
                                 "city": "Ahmedabad",
                                 "timezone": "+05:30"
                             },
+                            "currBatTeamId": 971,
                             "seriesStartDt": "1711065600000",
                             "seriesEndDt": "1716854400000",
                             "isTimeAnnounced": true
+                        },
+                        "matchScore": {
+                            "team1Score": {
+                                "inngs1": {
+                                    "inningsId": 1,
+                                    "runs": 231,
+                                    "wickets": 3,
+                                    "overs": 20.0
+                                }
+                            },
+                            "team2Score": {
+                                "inngs1": {
+                                    "inningsId": 2,
+                                    "runs": 196,
+                                    "wickets": 8,
+                                    "overs": 20.0
+                                }
+                            }
                         }
                     }
                 ],
@@ -3534,8 +3553,8 @@
                             "matchFormat": "T20",
                             "startDate": "1715436000000",
                             "endDate": "1715448600000",
-                            "state": "Upcoming",
-                            "status": "Match starts at May 11, 14:00 GMT",
+                            "state": "Complete",
+                            "status": "Kolkata Knight Riders won by 18 runs  -  16 overs game - due to rain",
                             "team1": {
                                 "teamId": 63,
                                 "teamName": "Kolkata Knight Riders",
@@ -3554,9 +3573,28 @@
                                 "city": "Kolkata",
                                 "timezone": "+05:30"
                             },
+                            "currBatTeamId": 63,
                             "seriesStartDt": "1711065600000",
                             "seriesEndDt": "1716854400000",
                             "isTimeAnnounced": true
+                        },
+                        "matchScore": {
+                            "team1Score": {
+                                "inngs1": {
+                                    "inningsId": 1,
+                                    "runs": 157,
+                                    "wickets": 7,
+                                    "overs": 16.0
+                                }
+                            },
+                            "team2Score": {
+                                "inngs1": {
+                                    "inningsId": 2,
+                                    "runs": 139,
+                                    "wickets": 8,
+                                    "overs": 16.0
+                                }
+                            }
                         }
                     }
                 ],
@@ -3576,19 +3614,19 @@
                             "matchFormat": "T20",
                             "startDate": "1715508000000",
                             "endDate": "1715520600000",
-                            "state": "Upcoming",
-                            "status": "Match starts at May 12, 10:00 GMT",
+                            "state": "Complete",
+                            "status": "Chennai Super Kings won by 5 wkts",
                             "team1": {
-                                "teamId": 58,
-                                "teamName": "Chennai Super Kings",
-                                "teamSName": "CSK",
-                                "imageId": 225641
-                            },
-                            "team2": {
                                 "teamId": 64,
                                 "teamName": "Rajasthan Royals",
                                 "teamSName": "RR",
                                 "imageId": 225647
+                            },
+                            "team2": {
+                                "teamId": 58,
+                                "teamName": "Chennai Super Kings",
+                                "teamSName": "CSK",
+                                "imageId": 225641
                             },
                             "venueInfo": {
                                 "id": 11,
@@ -3596,9 +3634,28 @@
                                 "city": "Chennai",
                                 "timezone": "+05:30"
                             },
+                            "currBatTeamId": 58,
                             "seriesStartDt": "1711065600000",
                             "seriesEndDt": "1716854400000",
                             "isTimeAnnounced": true
+                        },
+                        "matchScore": {
+                            "team1Score": {
+                                "inngs1": {
+                                    "inningsId": 1,
+                                    "runs": 141,
+                                    "wickets": 5,
+                                    "overs": 20.0
+                                }
+                            },
+                            "team2Score": {
+                                "inngs1": {
+                                    "inningsId": 2,
+                                    "runs": 145,
+                                    "wickets": 5,
+                                    "overs": 18.2
+                                }
+                            }
                         }
                     },
                     {
@@ -3610,8 +3667,8 @@
                             "matchFormat": "T20",
                             "startDate": "1715522400000",
                             "endDate": "1715535000000",
-                            "state": "Upcoming",
-                            "status": "Match starts at May 12, 14:00 GMT",
+                            "state": "Toss",
+                            "status": "Delhi Capitals opt to bowl",
                             "team1": {
                                 "teamId": 59,
                                 "teamName": "Royal Challengers Bengaluru",
@@ -4136,7 +4193,7 @@
             }
         }
     ],
-    "landingPosition": 107,
+    "landingPosition": 114,
     "appIndex": {
         "seoTitle": "Indian Premier League 2024 live scores, schedule and results - Cricbuzz | Cricbuzz.com",
         "webURL": "www.cricbuzz.com/cricket-series/"

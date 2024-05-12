@@ -2,10 +2,15 @@ from collections import OrderedDict
 from bs4 import BeautifulSoup
 from copy import deepcopy
 from requests import get
+from requests import get
 from json import loads
+from json import dump
 from tqdm import tqdm
+from pprint import pprint
+from prettytable import PrettyTable
 
 # Constants
+FILE = "Output.txt"
 STANDINGS_URL = "https://www.espncricinfo.com/series/indian-premier-league-2024-1410320/points-table-standings"
 MATCHES_URL = "https://cricbuzz-cricket.p.rapidapi.com/series/v1/7607"
 RAPID_API_HEADER = {
@@ -25,6 +30,14 @@ TEAMS = {
     255: "Sunrisers Hyderabad",
     106: "Upcoming Team",
 }
+
+
+def Update():
+    response = get(MATCHES_URL, headers=RAPID_API_HEADER)
+    response = response.json()
+
+    with open("Response.json", "w") as f:
+        dump(response, f, indent=4)
 
 
 def iterate(
@@ -50,6 +63,72 @@ def iterate(
                 standings[team1]["Points"] += 2
             else:
                 standings[team2]["Points"] += 2
+
+        # O(nlogn)
+        standings = OrderedDict(
+            sorted(
+                standings.items(),
+                key=lambda x: (x[1]["Points"], x[1]["NRR"]),
+                reverse=True,
+            )
+        )
+
+        # If the team is top 4 or tied for top 4 then add 1
+        fourth_points = list(standings.values())[TOP - 1]["Points"]
+        for team in standings:
+            if standings[team]["Points"] >= fourth_points:
+                probabilities_NONRR[team] += 1
+
+                # if team == "Chennai Super Kings":
+                #     table = PrettyTable()
+                #     table.field_names = ["Rank", "Team", "Points", "NRR"]
+                #     for i, team in enumerate(standings):
+                #         table.add_row(
+                #             [
+                #                 i + 1,
+                #                 team,
+                #                 standings[team]["Points"],
+                #                 standings[team]["NRR"],
+                #             ]
+                #         )
+                #     # Get the NRR of the 4th team in the standings
+                #     Fourth_NRR = list(standings.values())[3]["NRR"]
+                #     CSK_NRR = standings["Royal Challengers Bengaluru"]["NRR"]
+                #     with open(FILE, "a") as f:
+                #         f.write(str(table))
+                #         f.write(f"\nNRR Difference: {Fourth_NRR - CSK_NRR}")
+                #         f.write("\n\n")
+
+        top_4 = list(standings.keys())[:TOP]
+        for team in top_4:
+            probabilities_NRR[team] += 1
+
+    return probabilities_NONRR, probabilities_NRR
+
+
+def graph_iterate(
+    total: int,
+    teams: dict,
+    matches: list,
+    TOP: int,
+    probabilities_NONRR: dict,
+    probabilities_NRR: dict,
+):
+    for i in tqdm(range(total)):
+        standings = deepcopy(teams)
+        binary_i = bin(i)[2:].zfill(len(matches))
+        array_i = [int(x) for x in binary_i]
+
+        # O(n)
+        for j in range(len(array_i)):
+            match = matches[j]
+            team1 = match[0]
+            team2 = match[1]
+
+            if array_i[j] == 0:
+                standings[team1] += 2
+            else:
+                standings[team2] += 2
 
         # O(nlogn)
         standings = OrderedDict(
@@ -110,7 +189,7 @@ def get_standings() -> dict:
             "runs conceded": int(runs_conceded),
             "overs bowled": float(overs_bowled),
         }
-
+    teams["Chennai Super Kings"]["Points"] += 2
     return teams
 
 
@@ -130,9 +209,36 @@ def get_matches():
                     "Upcoming",
                     "In Progress",
                     "Preview",
+                    "Innings Break",
+                    "Toss",
                 ]:
                     team1_id = int(match["matchInfo"]["team1"]["teamId"])
                     team2_id = int(match["matchInfo"]["team2"]["teamId"])
                     upcoming_matches.append([TEAMS[team1_id], TEAMS[team2_id]])
-
     return upcoming_matches
+
+
+def get_all_matches():
+
+    response = open("Response.json", "r").read()
+    response = loads(response)
+
+    all_matches = []
+    matchDetailsMap = response.get("matchDetails", [])
+    for matchDetails in matchDetailsMap:
+        temp = matchDetails.get("matchDetailsMap", None)
+        if temp is not None:
+            matches = temp.get("match", [])
+            for match in matches:
+                team1_id = int(match["matchInfo"]["team1"]["teamId"])
+                team2_id = int(match["matchInfo"]["team2"]["teamId"])
+                result = match["matchInfo"]["status"]
+
+                if "won by" in result:
+                    result = result.split("won by")[0].strip()
+                    all_matches.append([TEAMS[team1_id], TEAMS[team2_id], result])
+
+    if len(all_matches) > 22:
+        all_matches = all_matches[-22:]
+
+    return all_matches

@@ -1,14 +1,11 @@
-from Methods import iterate, get_standings, get_matches
+from Methods import iterate, get_standings, get_matches, Update
 from prettytable import PrettyTable
 from copy import deepcopy
 from pprint import pprint
-from Store import Update
 from os import system
 
-# Constants
-TOP = 4
 
-# Variables
+# Constants
 N_probabilities_NONRR = {
     "Rajasthan Royals": 0,
     "Royal Challengers Bengaluru": 0,
@@ -34,13 +31,16 @@ can_qualify = {
     "Delhi Capitals": False,
     "Sunrisers Hyderabad": False,
 }
+TOP = 4
 
-# Main
-Update()
+
+# Update()
 system("clear")
 teams = get_standings()
 matches = get_matches()[:-4]
 total = 2 ** len(matches)
+
+# No Winner
 N_probabilities_NONRR, N_probabilities_NRR = iterate(
     total,
     teams,
@@ -52,8 +52,8 @@ N_probabilities_NONRR, N_probabilities_NRR = iterate(
 
 
 # Parse Probabilities
-N_probabilities_NONRR = dict(
-    sorted(N_probabilities_NONRR.items(), key=lambda x: x[1], reverse=True)
+N_probabilities_NRR = dict(
+    sorted(N_probabilities_NRR.items(), key=lambda x: x[1], reverse=True)
 )
 for team in N_probabilities_NONRR:
     if N_probabilities_NONRR[team] > 0:
@@ -69,16 +69,16 @@ for team in N_probabilities_NRR:
 table = PrettyTable()
 table.field_names = [
     "Team",
-    "No NRR Probability",
     "NRR Probability",
+    "No NRR Probability",
     f"Can Reach Top {TOP}",
 ]
-for team in N_probabilities_NONRR:
+for team in N_probabilities_NRR:
     table.add_row(
         [
             team,
-            N_probabilities_NONRR[team],
             N_probabilities_NRR[team],
+            N_probabilities_NONRR[team],
             can_qualify[team],
         ]
     )
